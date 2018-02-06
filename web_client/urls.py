@@ -1,3 +1,6 @@
 from django.conf.urls import url
+from web_client import views
 
-urlpatterns = []
+urlpatterns = [
+    url(r'^$', views.HomePage.as_view(), name='homepage'),
+]
