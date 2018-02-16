@@ -1,8 +1,24 @@
-from django.shortcuts import render
-from django.views.generic import View
+from django.shortcuts import render, redirect
+from django.views.generic import View, TemplateView
+from web_client.forms import *
 
 
-class HomePage(View):
+class HomePage(TemplateView):
+    template_name = 'homepage/index.html'
+
+
+class FileUpload(View):
+    template_name = 'upload/upload.html'
 
     def get(self, request):
-        return render(request, 'homepage/index.html')
+        form = ScheduleForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = ScheduleForm(self.request.POST, self.request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('homepage')
+
+        return render(request, self.template_name, {'form': form})
