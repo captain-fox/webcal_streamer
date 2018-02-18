@@ -19,7 +19,7 @@ class Event:
         try:
 
             for _class in schedule[1:]:
-                record = RawCSVEvent(
+                RawCSVEvent.objects.get_or_create(
                     ref=InputConverter.get_ref_from(_class),
                     title=InputConverter.get_class_title_from(_class),
                     time_start=InputConverter.get_start_time_from(_class),
@@ -30,7 +30,6 @@ class Event:
                     weekday=InputConverter.get_week_day_from(_class),
                     semester_weeks=InputConverter.get_weeks_from(_class)
                 )
-                record.save()
 
                 # Progress bar
                 progress = int((counter + 1) / segment)

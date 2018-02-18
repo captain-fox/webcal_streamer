@@ -3,7 +3,6 @@ from django.views.generic import View, TemplateView
 from web_client.forms import *
 from web_client.converter.FileHandler import *
 from web_client.converter.Event import *
-import csv
 
 
 class HomePage(TemplateView):
