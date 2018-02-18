@@ -1,6 +1,4 @@
-from datetime import *
 import csv
-from web_client.converter.Event import *
 from web_client.converter.InputConverter import *
 from web_client.converter.TermHandler import *
 from web_client.converter.OutputHandler import *

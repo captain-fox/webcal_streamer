@@ -34,7 +34,7 @@ class Converter(TemplateView):
 
         file = ScheduleFile.objects.first()
         working_copy = FileHandler.read_csv_file(file.file.path, InputConverter.__HEADERS__)
-        Event.collect_events_for_group(working_copy)
+        Event.import_csv_to_db(working_copy)
         events = RawCSVEvent.objects.all()
 
         context = super(Converter, self).get_context_data(**kwargs)
