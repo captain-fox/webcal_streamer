@@ -4,4 +4,5 @@ from web_client import views
 urlpatterns = [
     url(r'^$', views.HomePage.as_view(), name='homepage'),
     url(r'^upload/$', views.FileUpload.as_view(), name='upload'),
+    url(r'^import-schedule/$', views.Converter.as_view(), name='import'),
 ]
