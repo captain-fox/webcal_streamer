@@ -28,7 +28,9 @@ class Event:
                     teacher=InputConverter.get_teacher_from(row),
                     group=row[InputConverter.group_column()],
                     weekday=InputConverter.get_week_day_from(row),
-                    semester_weeks=InputConverter.get_weeks_from(row)
+                    semester_weeks=InputConverter.get_weeks_from(row),
+                    category=InputConverter.get_class_type_from(row),
+                    module_code=InputConverter.get_mod_code_from(row)
                 )
 
                 # Progress bar

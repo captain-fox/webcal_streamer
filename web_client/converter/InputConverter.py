@@ -9,7 +9,8 @@ class InputConverter:
         'Module': None,   # title
         'Room': None,  # location
         'Surname': None,  # teacher
-        'Group': None  # id of group
+        'Group': None,  # id of group
+        'ModCode': None
     }
 
     pl_weekdays = ['Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'Sb', 'Nd']
@@ -67,6 +68,10 @@ class InputConverter:
     def ref_column():
         return InputConverter.__HEADERS__['Ref']
 
+    @staticmethod
+    def mod_code_column():
+        return InputConverter.__HEADERS__['ModCode']
+
     # Collecting data for specific events
     @staticmethod
     def get_class_title_from(row):
@@ -120,3 +125,7 @@ class InputConverter:
     @staticmethod
     def get_teacher_from(row):
         return row[InputConverter.teacher_column()]
+
+    @staticmethod
+    def get_mod_code_from(row):
+        return row[InputConverter.mod_code_column()]
