@@ -18,17 +18,17 @@ class Event:
 
         try:
 
-            for _class in schedule[1:]:
+            for row in schedule[1:]:
                 RawCSVEvent.objects.get_or_create(
-                    ref=InputConverter.get_ref_from(_class),
-                    title=InputConverter.get_class_title_from(_class),
-                    time_start=InputConverter.get_start_time_from(_class),
-                    time_end=InputConverter.get_end_time_from(_class),
-                    room=InputConverter.get_location_from(_class),
-                    teacher=InputConverter.get_teacher_from(_class),
-                    group=_class[InputConverter.group_column()],
-                    weekday=InputConverter.get_week_day_from(_class),
-                    semester_weeks=InputConverter.get_weeks_from(_class)
+                    ref=InputConverter.get_ref_from(row),
+                    title=InputConverter.get_class_title_from(row),
+                    time_start=InputConverter.get_start_time_from(row),
+                    time_end=InputConverter.get_end_time_from(row),
+                    room=InputConverter.get_location_from(row),
+                    teacher=InputConverter.get_teacher_from(row),
+                    group=row[InputConverter.group_column()],
+                    weekday=InputConverter.get_week_day_from(row),
+                    semester_weeks=InputConverter.get_weeks_from(row)
                 )
 
                 # Progress bar
@@ -48,3 +48,6 @@ class Event:
             sys.stdout.write('{} Complete{}\n'.format(process_title, length_of_buffer * ' '))
         except Exception as e:
             print('Unpredicted exception while collecting raw events: {}'.format(e))
+        else:
+            sys.stdout.write('\r')
+            sys.stdout.write('{} Complete{}\n'.format(process_title, length_of_buffer * ' '))
