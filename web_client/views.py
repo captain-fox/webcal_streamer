@@ -27,18 +27,18 @@ class FileUpload(View):
         return render(request, self.template_name, {'form': form})
 
 
-class Converter(View):
-    template_name = 'homepage/test.html'
+class Converter(TemplateView):
+    template_name = 'homepage/preview.html'
 
-    def get(self, request):
+    def get_context_data(self, **kwargs):
+
         file = ScheduleFile.objects.first()
         working_copy = FileHandler.read_csv_file(file.file.path, InputConverter.__HEADERS__)
         Event.collect_events_for_group(working_copy)
-
         events = RawCSVEvent.objects.all()
-        count = events.count()
 
-        return render(request, self.template_name, {'file': file, 'events': events, 'count': count})
+        context = super(Converter, self).get_context_data(**kwargs)
+        context['file'] = file
+        context['events'] = events
 
-    def post(self, request):
-        pass
+        return context
