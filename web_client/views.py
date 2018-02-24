@@ -32,8 +32,9 @@ class Converter(TemplateView):
     def get_context_data(self, **kwargs):
 
         file = ScheduleFile.objects.first()
-        working_copy = FileHandler.read_csv_file(file.file.path, InputConverter.__HEADERS__)
-        Event.import_csv_to_db(working_copy)
+        if file is not None:
+            working_copy = FileHandler.read_csv_file(file.file.path, InputConverter.__HEADERS__)
+            Event.import_csv_to_db(working_copy)
         events = RawCSVEvent.objects.all()
 
         context = super(Converter, self).get_context_data(**kwargs)
@@ -41,3 +42,20 @@ class Converter(TemplateView):
         context['events'] = events
 
         return context
+
+
+class ScheduleFiles(TemplateView):
+    template_name = 'upload/convert-modal.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ScheduleFiles, self).get_context_data(**kwargs)
+        context['files'] = ScheduleFile.objects.all()
+        return context
+
+# class Search(View):
+#     template_name = ''
+#
+#     def get(self, request):
+#         id = request.GET.get('post_id')
+#
+#         return context
