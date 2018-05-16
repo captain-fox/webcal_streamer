@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web_client',
+
+    # 3rd party apps
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -79,18 +83,24 @@ WSGI_APPLICATION = 'webcal_ninja.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    # 'postgres': {
-    #     'NAME': 'postgres',
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'USER': 'postgres',
-    #     'PASSWORD': '',
-    #     'HOST': '0.0.0.0',
-    #     'PORT': '5432',
+    # Local SQLite instance
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # },
+
+    # To be able to run project without database
+    # 'default': {},
+
+    # Dockerized Postgres instance
+    'default': {
+        'NAME': 'schedule',
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER': config('DB_USER', default='postgres'),
+        'PASSWORD': '',
+        'HOST': '0.0.0.0',
+        'PORT': '5432',
+    },
 }
 
 
@@ -129,11 +139,28 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'web_client', 'static'),
-    os.path.join(BASE_DIR, 'web_client', 'templates'),
+    os.path.join(BASE_DIR, 'static'),
                     )
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'web_client/media')
+HOST_STATIC_FROM_AWS = True
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+if HOST_STATIC_FROM_AWS:
+    STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    STATIC_ROOT = 'assets'
+    STATIC_URL = '/static/'
