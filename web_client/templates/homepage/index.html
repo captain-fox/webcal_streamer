@@ -3,53 +3,53 @@
 
 {% block content %}
 
-    {#  Navbar  #}
-    <div id="navbar-container"></div>
+  {#  Navbar  #}
+  <div id="navbar-container"></div>
 
-    {#  Main container  #}
-    <div class="row" id="main-container">
-        <div class="col-md-12 col-lg-8">
-            <div class="form-group">
-                <div id="searchForm">
-                    <div class="dropdown" id="search-dropdown">
-                        <input class="form-control dropdown-toggle" data-toggle="dropdown" type="search"
-                               id="search-input"
-                               placeholder="Wyszukaj plan dla twojej grupy">
+  {#  Main container  #}
+  <div class="row" id="main-container">
+    <div class="col-md-12 col-lg-8">
+      <div class="form-group">
+        <div id="searchForm">
+          <div class="dropdown" id="search-dropdown">
+            <input class="form-control dropdown-toggle" data-toggle="dropdown" type="search"
+                   id="search-input"
+                   placeholder="Wyszukaj plan dla twojej grupy">
 
-                        <div class="col-md-12 col-lg-12 dropdown-menu" aria-labelledby="dropdownSearch" id="suggestions"></div>
-                    </div>
-                </div>
-
-            </div>
+            <div class="col-md-12 col-lg-12 dropdown-menu" aria-labelledby="dropdownSearch" id="suggestions"></div>
+          </div>
         </div>
-        <div class="col-md-12 col-lg-4">
-            <a class="btn btn-primary" href="{% url 'upload' %}" role="button">Upload</a>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#convert-modal">
-                Import events from file
-            </button>
 
-
-            <!-- Schedule files modal -->
-            <div class="modal fade" id="convert-modal" tabindex="-1" role="dialog" aria-labelledby="convert-modal"
-                 aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content" id="schedule-files-container"></div>
-                </div>
-            </div>
-
-        </div>
+      </div>
     </div>
+    <div class="col-md-12 col-lg-4">
+      <a class="btn btn-primary" href="{% url 'upload' %}" role="button">Upload</a>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#convert-modal">
+        Import events from file
+      </button>
+
+
+      <!-- Schedule files modal -->
+      <div class="modal fade" id="convert-modal" tabindex="-1" role="dialog" aria-labelledby="convert-modal"
+           aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content" id="schedule-files-container"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 
 
 {% endblock %}
 
 {% block customscript %}
-    <script>
-        $('#convert-modal').on('show.bs.modal', function () {
-            console.log('called!');
-            load_content('#schedule-files-container', '{% url 'load_schedule_files' %}', ' ')
-        });
+  <script>
+      $('#convert-modal').on('show.bs.modal', function () {
+          console.log('called!');
+          load_content('#schedule-files-container', '{% url 'load_schedule_files' %}', ' ')
+      });
 
-    </script>
+  </script>
 {% endblock %}
